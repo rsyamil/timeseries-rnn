@@ -17,75 +17,25 @@ class DataLoader:
 
         self.verbose = verbose
         
-        self.x = []
         self.y = []
-        
-        self.cumm = []
-        self.label = []
-        
+ 
         self.n_lag = 3
         self.n_seq = 3
         
         self.ref = []
     
-    def load_data(self):
-    
-        df = pd.read_csv("Data_Simulated_Bakken/DATA_BAKKEN.csv")
-        df = df.to_numpy()
-
-        x = df[:, 0:6]
-        self.y = df[:, 6:6+60]
-
-        x_min = np.min(x, axis=0)
-        x_max = np.max(x, axis=0)
-        self.x = (x - x_min)/(x_max - x_min)
-    
-        self.cumm = (np.sum(self.y, axis=-1)).flatten()
-        
-        #derive label for performance
-        partitions = [2100, 3700]
-        self.label = np.zeros(self.cumm.shape, dtype=np.int16)
-        self.label = np.where(self.cumm > partitions[0], 1, self.label)
-        self.label = np.where(self.cumm > partitions[1], 2, self.label)
-        
-        p = 400
-        x_train_sim = self.x[0:p, :]
-        x_test_sim = self.x[p:, :] 
-
-        train1 = self.cumm[0:p,]
-        test1 = self.cumm[p:,] 
-
-        train2 = self.label[0:p,]
-        test2 = self.label[p:,] 
-
-        from keras.utils import to_categorical
-        train2_one_hot = to_categorical(train2)
-        test2_one_hot = to_categorical(test2)
-        label_one_hot = to_categorical(self.label)
-        
-        if self.verbose:
-            #visualize the histograms
-            plt.figure(figsize=[12, 3.5])
-            plt.subplot(1, 3, 1)
-            plt.hist(self.cumm, bins=50)
-            for p in partitions:
-                plt.axvline(x=p, c='r', lw=3)
-            plt.xlim([0, 11000])
-            plt.title("Data")
-
-            plt.subplot(1, 3, 2)
-            #visualize the histograms (CDF)
-            plt.hist(self.cumm, bins=50, cumulative=True, density=True)
-            for p in partitions:
-                plt.axvline(x=p, c='r', lw=3)
-            plt.xlim([0, 11000])
-            plt.title("Data")
-
-            plt.subplot(1, 3, 3)
-            plt.hist(self.label)
-            plt.title("Data")
-            
-        return x_train_sim, x_test_sim, train1, test1, train2, test2, train2_one_hot, test2_one_hot
+    def load_data(self, load = "linear"):
+        if load == "linear":
+            self.y = np.load("Data_Simulated_Bakken/y1.npy").T
+            #self.y = self.y[:, 0:100]
+        elif load == "hyperbolic":
+            self.y = np.load("Data_Simulated_Bakken/y2.npy").T
+            #self.y = self.y[:, 0:100]
+        elif load == "both":
+            y1 = np.load("Data_Simulated_Bakken/y1.npy").T
+            y2 = np.load("Data_Simulated_Bakken/y2.npy").T
+            self.y = np.concatenate((y1, y2))
+            #self.y = self.y[:, 0:100]
     
     def series_to_supervised(self, data, n_lag=1, n_seq=1, dropnan=True):
       
@@ -119,7 +69,8 @@ class DataLoader:
         
         ref = (self.y[ref_case, :] - np.min(self.y[ref_case, :])) / (np.max(self.y[ref_case, :]) - np.min(self.y[ref_case, :]))
         
-        self.ref = ref + np.random.normal(loc=0.0, scale=0.03, size=ref.shape)
+        #self.ref = ref + np.random.normal(loc=0.0, scale=0.03, size=ref.shape)
+        self.ref = ref
         
         data = self.series_to_supervised(self.ref.tolist(), self.n_lag, self.n_seq)
         

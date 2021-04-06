@@ -132,6 +132,8 @@ class CNN:
 
             y_hat = self.model.predict(x, batch_size=self.n_batch)
             forecasts_multi.append(y_hat[0, :])
+	    
+            y_hat = y_hat[:, -self.n_lag:]
             x = y_hat.reshape(1, y_hat.shape[1], 1)
             
         return forecasts_multi
