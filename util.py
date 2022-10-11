@@ -111,5 +111,5 @@ def plot_profiles(ref, actual_train, forecasts_train, actual_test, forecasts_tes
     
     fig.tight_layout() 
     fig.savefig(name+'.png')
-    plt.close(fig)
+    #plt.close(fig)
     

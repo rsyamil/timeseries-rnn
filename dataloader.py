@@ -58,7 +58,7 @@ class DataLoader:
         train2 = self.label[0:p,]
         test2 = self.label[p:,] 
 
-        from keras.utils import to_categorical
+        from tensorflow.keras.utils import to_categorical
         train2_one_hot = to_categorical(train2)
         test2_one_hot = to_categorical(test2)
         label_one_hot = to_categorical(self.label)

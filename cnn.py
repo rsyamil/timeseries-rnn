@@ -1,30 +1,31 @@
 import numpy as np
 import util
-import keras
-from keras.models import Model
-from keras.layers import Layer, Flatten, LeakyReLU
-from keras.layers import Input, Reshape, Dense, Lambda
-from keras.layers import Conv2D, MaxPooling2D, UpSampling2D
 
-from keras.layers import Conv1D, UpSampling1D
-from keras.layers import AveragePooling1D, MaxPooling1D
+import tensorflow as tf
+from tensorflow import keras
 
-from keras.layers import LSTM, Dropout
+from tensorflow.keras.models import Model
+from tensorflow.keras.layers import Layer, Flatten, LeakyReLU
+from tensorflow.keras.layers import Input, Reshape, Dense, Lambda
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, UpSampling2D
 
-from keras import backend as K
-from keras.engine.base_layer import InputSpec
+from tensorflow.keras.layers import Conv1D, UpSampling1D
+from tensorflow.keras.layers import AveragePooling1D, MaxPooling1D
 
-from keras.optimizers import Adam, SGD, RMSprop
-from keras.layers.normalization import BatchNormalization
-from keras.losses import mse, binary_crossentropy
-from keras import regularizers, activations, initializers, constraints
-from keras.constraints import Constraint
-from keras.callbacks import History, EarlyStopping
+from tensorflow.keras.layers import LSTM, Dropout
 
-from keras.utils import plot_model
-from keras.models import load_model
+from tensorflow.keras import backend as K
 
-from keras.utils.generic_utils import get_custom_objects
+from tensorflow.keras.optimizers import Adam, SGD, RMSprop
+from tensorflow.keras.losses import mse, binary_crossentropy
+from tensorflow.keras import regularizers, activations, initializers, constraints
+from tensorflow.keras.constraints import Constraint
+from tensorflow.keras.callbacks import History, EarlyStopping
+
+from tensorflow.keras.utils import plot_model
+from tensorflow.keras.models import load_model
+
+from tensorflow.python.keras.utils.generic_utils import get_custom_objects
 
 import string
 import numpy as np
@@ -100,7 +101,7 @@ class CNN:
                         epochs=1, batch_size=self.n_batch, verbose=False,
                         shuffle=True, callbacks=[history])
 
-            losses[i, :] = np.squeeze(np.asarray(list(history.history.values())))
+            losses[i, :]  = np.asarray(list(history.history.values()))[:, i]
             print ("%d [Loss: %f] [Val loss: %f]" % (i, losses[i, 0], losses[i, 1]))
             
             figs = util.plotLosses(losses, name="cnn_losses")
