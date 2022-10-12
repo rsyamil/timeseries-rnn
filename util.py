@@ -81,7 +81,7 @@ def plot_profiles(ref, actual_train, forecasts_train, actual_test, forecasts_tes
 
     timesteps = np.linspace(0, ref.shape[0]-1, ref.shape[0])
 
-    fig = plt.figure(figsize=(12, 8))
+    fig = plt.figure(figsize=(4, 3))
     plt.scatter(timesteps, ref, c = 'gray', alpha=0.2, s=10)
     
     for i in range(actual_train.shape[0]):
@@ -110,6 +110,6 @@ def plot_profiles(ref, actual_train, forecasts_train, actual_test, forecasts_tes
     plt.ylabel("Oil rate (bpd)")
     
     fig.tight_layout() 
-    fig.savefig(name+'.png')
+    fig.savefig(name+'.png', dpi=500)
     #plt.close(fig)
     
