@@ -76,7 +76,7 @@ class TF:
 		res = _ + input
 		
 		_ = LayerNormalization(epsilon=1e-6)(res)
-		_ = Conv1D(filters=ff_dim, kernel_size=1, activation="relu")(_)
+		_ = Conv1D(filters=ff_dim, kernel_size=3, activation="relu", padding="same")(_)
 		_ = Dropout(dropout)(_)
 		_ = Conv1D(filters=input.shape[-1], kernel_size=1)(_)
 		return _ + res
