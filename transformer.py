@@ -60,10 +60,10 @@ class TF:
         
 		self.model = []
 		
-		self.head_size = 8
-		self.num_heads = 2
+		self.head_size = 1
+		self.num_heads = 8
 		self.ff_dim = 8
-		self.num_transformer_blocks = 2
+		self.num_transformer_blocks = 3
 		self.mlp_units = [16]
 		self.dropout = 0.4
 		self.mlp_dropout = 0.25
