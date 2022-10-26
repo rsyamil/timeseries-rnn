@@ -60,7 +60,7 @@ class TF:
         
 		self.model = []
 		
-		self.head_size = 1
+		self.head_size = 3
 		self.num_heads = 8
 		self.ff_dim = 8
 		self.num_transformer_blocks = 3
